@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Striker
+  - Puck
   layers:
   - Default
   - TransparentFX
@@ -40,4 +42,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Board
+    uniqueID: 2109259665
+    locked: 0
+  - name: UnderPucks
+    uniqueID: 3491988463
+    locked: 0
+  - name: Pucks
+    uniqueID: 1303065815
+    locked: 0
+  - name: UnderStriker
+    uniqueID: 2671297807
+    locked: 0
+  - name: Striker
+    uniqueID: 209036527
+    locked: 0
+  - name: Foreground
+    uniqueID: 3970313093
     locked: 0

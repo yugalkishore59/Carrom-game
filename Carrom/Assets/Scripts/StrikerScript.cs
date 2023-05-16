@@ -4,45 +4,72 @@ using UnityEngine;
 
 public class StrikerScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    bool touchPhase = false;
+    bool isTouching = false;
     [SerializeField] GameObject forceCircle;
     [SerializeField] GameObject arrow;
     [SerializeField] float maxForce = 500f;
-    Touch strikerTouch;
     [SerializeField] float curForce;
+    [SerializeField] float forceFactor = 5;
+    [SerializeField] float minSpeed=1f;
+    Touch touch;
+    Vector2 strikerPosition;
+    Vector2 direction;
+    Rigidbody2D rb;
 
     void Start()
     {
-        
+        rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(touchPhase && Input.GetMouseButtonUp(0)){
-            touchPhase = false;
-            //Debug.Log(strikerTouch.position.x);
+    void Update(){
+
+        DetectTouch();
+        if(isTouching){
+            StrikerDragging();
+        }
+        if(rb.velocity.magnitude < minSpeed){
+            rb.velocity = Vector2.zero;
         }
 
-        if(touchPhase){
-            strikerTouch = Input.GetTouch(0);
-            onStrikerDragging();
+    }
+
+    void DetectTouch(){
+        if (Input.touchCount > 0){
+            touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began){
+                Vector2 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
+                Collider2D collider = Physics2D.OverlapPoint(touchPosition);
+                if (collider != null && collider.gameObject == gameObject)
+                {
+                    arrow.SetActive(true);
+                    forceCircle.SetActive(true);
+                    isTouching = true;
+                }
+            }else if(touch.phase == TouchPhase.Ended){
+                isTouching = false;
+                arrow.SetActive(false);
+                forceCircle.SetActive(false);
+                ThrowStriker();
+            }
         }
     }
 
-    private void OnMouseOver() {
-        if(Input.GetMouseButtonDown(0)){
-            touchPhase = true;
-        }
-    }
-
-    void onStrikerDragging(){
-        Vector3 touchPos = Camera.main.ScreenToViewportPoint(strikerTouch.position);
-        touchPos.z=0;
-        curForce = (transform.position - touchPos).magnitude;
+    void StrikerDragging(){
+        strikerPosition = new Vector2(transform.position.x,transform.position.y);
+        Vector2 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
+        curForce = (strikerPosition - touchPosition).magnitude;
         curForce = Mathf.Clamp(curForce,0f,maxForce);
 
-        arrow.transform.LookAt((transform.position - touchPos).normalized);
+        direction = touchPosition - (Vector2)transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        arrow.transform.rotation = Quaternion.AngleAxis(angle+180, Vector3.forward);
+        float circleScale = 4.8f + (curForce * 7);
+        forceCircle.transform.localScale = new Vector3(1,1,1)* circleScale;
+    }
+
+    void ThrowStriker(){
+        rb.AddForce(-direction.normalized * curForce * forceFactor);
+        curForce = 0;
     }
 }

@@ -65,7 +65,9 @@ public class StrikerScript : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         arrow.transform.rotation = Quaternion.AngleAxis(angle+180, Vector3.forward);
         float circleScale = 4.8f + (curForce * 7);
+        float arrowScale = 4.5f + (curForce * 2);
         forceCircle.transform.localScale = new Vector3(1,1,1)* circleScale;
+        arrow.transform.localScale = new Vector3(1,1,1)* arrowScale;
     }
 
     void ThrowStriker(){

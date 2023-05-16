@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StrikerScript : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class StrikerScript : MonoBehaviour
     Vector2 strikerPosition;
     Vector2 direction;
     Rigidbody2D rb;
+    [SerializeField] Slider slider;
+    int mode = 1; //1 player, -1 cpu, 0 none
 
     void Start()
     {
@@ -24,6 +27,10 @@ public class StrikerScript : MonoBehaviour
     void Update(){
 
         DetectTouch();
+        if(mode == 1){
+            SlideControls();
+        }
+
         if(isTouching){
             StrikerDragging();
         }
@@ -42,6 +49,7 @@ public class StrikerScript : MonoBehaviour
                 Collider2D collider = Physics2D.OverlapPoint(touchPosition);
                 if (collider != null && collider.gameObject == gameObject)
                 {
+                    mode = 0;
                     arrow.SetActive(true);
                     forceCircle.SetActive(true);
                     isTouching = true;
@@ -73,5 +81,9 @@ public class StrikerScript : MonoBehaviour
     void ThrowStriker(){
         rb.AddForce(-direction.normalized * curForce * forceFactor);
         curForce = 0;
+    }
+
+    void SlideControls(){
+        transform.position = new Vector3 (4.5f * slider.value,-5.5f,0);
     }
 }

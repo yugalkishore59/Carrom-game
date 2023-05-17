@@ -18,16 +18,20 @@ public class StrikerScript : MonoBehaviour
     Rigidbody2D rb;
     [SerializeField] Slider slider;
     int mode = 1; //1 player, -1 cpu, 0 none
+    GameManagerScript gameManagerScript;
+    [SerializeField]  GameObject gameManager;
+    bool isMoving = false;
 
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
+        gameManagerScript = gameManager.GetComponent<GameManagerScript>();
     }
 
     void Update(){
 
         DetectTouch();
-        if(mode == 1){
+        if(mode == 1 || mode == -1){ //two player mode -- will be changed
             SlideControls();
         }
 
@@ -36,12 +40,22 @@ public class StrikerScript : MonoBehaviour
         }
         if(rb.velocity.magnitude < minSpeed){
             rb.velocity = Vector2.zero;
+            if(isMoving){
+                gameManagerScript.movingPucks -= 1;
+                isMoving = false;
+            }
+        }
+
+        if(!isMoving && rb.velocity.magnitude != 0){
+            isMoving = true;
+            gameManagerScript.movingPucks += 1;
+            gameManagerScript.strikerThrown = true;
         }
 
     }
 
     void DetectTouch(){
-        if (Input.touchCount > 0){
+        if (Input.touchCount > 0 && !isMoving ){  //bug here -- as soon as striker stops, it can be dragged to throw in midddle of board
             touch = Input.GetTouch(0);
 
             if (touch.phase == TouchPhase.Began){
@@ -59,6 +73,7 @@ public class StrikerScript : MonoBehaviour
                 arrow.SetActive(false);
                 forceCircle.SetActive(false);
                 ThrowStriker();
+                //gameManagerScript.strikerThrown = true;
             }
         }
     }
@@ -84,6 +99,17 @@ public class StrikerScript : MonoBehaviour
     }
 
     void SlideControls(){
-        transform.position = new Vector3 (4.5f * slider.value,-5.5f,0);
+        transform.position = new Vector3 (4.5f * slider.value,transform.position.y,0);
+    }
+
+    public void ChangeSide(){
+        if(gameManagerScript.turn == 1){ //player's turn
+            transform.position = new Vector3(0,-5.5f,0);
+            mode = 1;
+        }
+        else{ //cpu's turn
+            transform.position = new Vector3(0,5.5f,0);
+            mode = -1;
+        }
     }
 }

@@ -8,7 +8,34 @@ public class GameManagerScript : MonoBehaviour
    [SerializeField] TMP_Text cpuScore;
    [SerializeField] TMP_Text playerScore;
    public int movingPucks = 0;
-   public int turn = 0; // 1 player, -1 cpu, 0 none
+   public int turn = 1; // 1 player, -1 cpu, 0 none
+   [SerializeField] GameObject striker;
+   StrikerScript strikerScript;
+   public int pucksCount = 10;
+   public bool strikerThrown = false;
+   public bool isPotted = false;
+
+   private void Awake() {
+     strikerScript = striker.GetComponent<StrikerScript>();
+   }
+
+   private void Update() {
+
+     if(strikerThrown && movingPucks == 0){
+          strikerThrown = false;
+          if(!isPotted){
+               if(turn == 1)
+                    turn = -1;
+               else
+                    turn = 1;
+          }else{
+               isPotted = false;
+          }
+          
+
+          strikerScript.ChangeSide();
+     }
+   }
 
    public void UpdatePlayerScore(int score){
         int old = int.Parse(playerScore.text);

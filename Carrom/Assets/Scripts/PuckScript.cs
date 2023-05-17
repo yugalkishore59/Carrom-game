@@ -10,6 +10,7 @@ public class PuckScript : MonoBehaviour
     [SerializeField]  GameObject gameManager;
     GameManagerScript gameManagerScript;
     [SerializeField] int score = 1;
+    bool isMoving = false;
 
     void Start()
     {
@@ -21,6 +22,15 @@ public class PuckScript : MonoBehaviour
     {
         if(rb.velocity.magnitude < minSpeed){
             rb.velocity = Vector2.zero;
+            if(isMoving){
+                gameManagerScript.movingPucks -= 1;
+                isMoving = false;
+            } 
+        }
+
+        if(!isMoving && rb.velocity.magnitude != 0){
+            isMoving = true;
+            gameManagerScript.movingPucks += 1;
         }
     }
 
@@ -39,6 +49,12 @@ public class PuckScript : MonoBehaviour
 
     IEnumerator DestroyAfter(int s){
         yield return new WaitForSeconds(s);
+        if(isMoving){
+            gameManagerScript.movingPucks -= 1;
+            isMoving = false;
+        }
+        gameManagerScript.isPotted = true;
+        gameManagerScript.pucksCount -= 1;
         gameObject.SetActive(false);
     }
 }

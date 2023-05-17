@@ -22,12 +22,15 @@ public class StrikerScript : MonoBehaviour
     GameManagerScript gameManagerScript;
     [SerializeField]  GameObject gameManager;
     bool isMoving = false;
+    [SerializeField] GameObject CPU;
+    CPUScript cPUScript;
 
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         gameManagerScript = gameManager.GetComponent<GameManagerScript>();
         slider = sliderObject.GetComponent<Slider>();
+        cPUScript = CPU.GetComponentInParent<CPUScript>();
     }
 
     void Update(){
@@ -49,6 +52,7 @@ public class StrikerScript : MonoBehaviour
         }
 
         if(!isMoving && rb.velocity.magnitude != 0){
+            mode = 0; //making sure for cpu
             isMoving = true;
             gameManagerScript.movingPucks += 1;
             gameManagerScript.strikerThrown = true;
@@ -114,6 +118,7 @@ public class StrikerScript : MonoBehaviour
             transform.position = new Vector3(0,5.5f,0);
             sliderObject.transform.localPosition = new Vector3(0,700,0);
             mode = -1;
+            cPUScript.isCPUTurn = true;
         }
     }
 }

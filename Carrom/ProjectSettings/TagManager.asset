@@ -5,8 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Striker
-  - Puck
   - Hole
+  - White Puck
+  - Black Puck
   layers:
   - Default
   - TransparentFX

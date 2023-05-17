@@ -9,7 +9,8 @@ public class CPUScript : MonoBehaviour
     [SerializeField] GameObject striker;
     [SerializeField] Slider slider;
     Rigidbody2D strikerRb;
-    [SerializeField] float forceFactor = 5;
+    [SerializeField] float minForce = 500;
+    [SerializeField] float maxForce = 1200;
     [SerializeField] GameObject gameManager;
     GameManagerScript gameManagerScript;
     public bool isCPUTurn = false;
@@ -38,7 +39,8 @@ public class CPUScript : MonoBehaviour
                     slider.value = transform.position.x / 4.5f;
                     striker.transform.position = transform.position;
                     Vector2 direction=holes[i].transform.position - transform.position;
-                    strikerRb.AddForce(direction.normalized * forceFactor);
+                    float force = Random.Range(minForce,maxForce);
+                    strikerRb.AddForce(direction.normalized * force);
                     flag =1;
                     break;
                     }
@@ -53,7 +55,7 @@ public class CPUScript : MonoBehaviour
             transform.position += new Vector3(0.5f,0,0);
         }
         if(flag==0){
-            strikerRb.AddForce(Vector2.down.normalized * forceFactor);
+            strikerRb.AddForce(Vector2.down.normalized * minForce);
         }
     }
 }

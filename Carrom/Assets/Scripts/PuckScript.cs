@@ -39,6 +39,7 @@ public class PuckScript : MonoBehaviour
         if(other.tag == "Hole"){
             rb.velocity = Vector2.zero;
             transform.position = other.transform.position;
+            gameObject.GetComponent<CircleCollider2D>().enabled= false;
             if(id == 1){ //player's puck ie. white
                 gameManagerScript.UpdatePlayerScore(score);
             }else if(id == -1){ //cpu's puck ie. black

@@ -7,6 +7,7 @@ public class StrikerScript : MonoBehaviour
 {
     bool isTouching = false;
     [SerializeField] GameObject forceCircle;
+    [SerializeField] GameObject sliderObject;
     [SerializeField] GameObject arrow;
     [SerializeField] float maxForce = 500f;
     [SerializeField] float curForce;
@@ -16,7 +17,7 @@ public class StrikerScript : MonoBehaviour
     Vector2 strikerPosition;
     Vector2 direction;
     Rigidbody2D rb;
-    [SerializeField] Slider slider;
+    Slider slider;
     int mode = 1; //1 player, -1 cpu, 0 none
     GameManagerScript gameManagerScript;
     [SerializeField]  GameObject gameManager;
@@ -26,6 +27,7 @@ public class StrikerScript : MonoBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         gameManagerScript = gameManager.GetComponent<GameManagerScript>();
+        slider = sliderObject.GetComponent<Slider>();
     }
 
     void Update(){
@@ -105,10 +107,12 @@ public class StrikerScript : MonoBehaviour
     public void ChangeSide(){
         if(gameManagerScript.turn == 1){ //player's turn
             transform.position = new Vector3(0,-5.5f,0);
+            sliderObject.transform.localPosition = new Vector3(0,-700,0);
             mode = 1;
         }
         else{ //cpu's turn
             transform.position = new Vector3(0,5.5f,0);
+            sliderObject.transform.localPosition = new Vector3(0,700,0);
             mode = -1;
         }
     }

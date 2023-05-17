@@ -11,6 +11,7 @@ public class PuckScript : MonoBehaviour
     GameManagerScript gameManagerScript;
     [SerializeField] int score = 1;
     bool isMoving = false;
+    [SerializeField] int id = 1; //1 player ie. white, -1 cpu ie. black, 0 queen
 
     void Start()
     {
@@ -38,10 +39,16 @@ public class PuckScript : MonoBehaviour
         if(other.tag == "Hole"){
             rb.velocity = Vector2.zero;
             transform.position = other.transform.position;
-            if(gameManagerScript.turn == 1){ //player's turn
+            if(id == 1){ //player's puck ie. white
                 gameManagerScript.UpdatePlayerScore(score);
-            }else{
+            }else if(id == -1){ //cpu's puck ie. black
                 gameManagerScript.UpdateCPUScore(score);
+            }else{ // queen
+                    if(gameManagerScript.turn == 1){ //player potted queen
+                        gameManagerScript.UpdatePlayerScore(score);
+                    }else{ //cpu potted queen
+                        gameManagerScript.UpdateCPUScore(score);
+                    }
             }
             StartCoroutine(DestroyAfter(1));
         }
@@ -53,8 +60,12 @@ public class PuckScript : MonoBehaviour
             gameManagerScript.movingPucks -= 1;
             isMoving = false;
         }
-        gameManagerScript.isPotted = true;
-        gameManagerScript.pucksCount -= 1;
+        if(id == gameManagerScript.turn || id == 0){ //for playing again
+            gameManagerScript.isPotted = true;
+        }
+        if(id == 1) gameManagerScript.whitePucksCount -= 1;
+        else if(id == -1) gameManagerScript.blackPucksCount -= 1;
+        else gameManagerScript.queenPucksCount -= 1;
         gameObject.SetActive(false);
     }
 }

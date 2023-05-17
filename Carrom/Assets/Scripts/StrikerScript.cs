@@ -55,7 +55,7 @@ public class StrikerScript : MonoBehaviour
     }
 
     void DetectTouch(){
-        if (Input.touchCount > 0 && !isMoving ){  //bug here -- as soon as striker stops, it can be dragged to throw in midddle of board
+        if (Input.touchCount > 0 && !isMoving ){  //bug here -- as soon as striker stops, it can be dragged to throw in middle of board
             touch = Input.GetTouch(0);
 
             if (touch.phase == TouchPhase.Began){

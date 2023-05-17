@@ -72,17 +72,28 @@ public class GameManagerScript : MonoBehaviour
      timer = 0;
      int playerScoreCount = int.Parse(playerScore.text);
      int cpuScoreCount = int.Parse(cpuScore.text);
-     if(playerScoreCount>cpuScoreCount){
-          winner.text = "Player";
-     }else if(cpuScoreCount>playerScoreCount){
-          winner.text = "CPU";
+     if(SceneManager.GetActiveScene().name == "Game"){
+          if(playerScoreCount>cpuScoreCount){
+               winner.text = "Player";
+          }else if(cpuScoreCount>playerScoreCount){
+               winner.text = "CPU";
+          }else{
+               winner.text = "No one";
+          }
      }else{
-          winner.text = "No one";
+          if(playerScoreCount>cpuScoreCount){
+               winner.text = "Player 1";
+          }else if(cpuScoreCount>playerScoreCount){
+               winner.text = "Player 2";
+          }else{
+               winner.text = "No one";
+          }
      }
+     
      gameOver.SetActive(true);
    }
 
    public void PlayAgain(){
-     SceneManager.LoadScene("Game");
+     SceneManager.LoadScene("Main");
    }
 }

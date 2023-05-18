@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class PuckScript : MonoBehaviour
 {
-    // Start is called before the first frame update
     Rigidbody2D rb;
-    [SerializeField] float minSpeed=1f;
+
     [SerializeField]  GameObject gameManager;
     GameManagerScript gameManagerScript;
+
+    [SerializeField] float minSpeed=1f; //minimun stopping speed
     [SerializeField] int score = 1;
-    bool isMoving = false;
     [SerializeField] int id = 1; //1 player ie. white, -1 cpu ie. black, 0 queen
+    bool isMoving = false;
 
     void Start()
     {
@@ -21,21 +22,21 @@ public class PuckScript : MonoBehaviour
 
     void Update()
     {
-        if(rb.velocity.magnitude < minSpeed){
+        if(rb.velocity.magnitude < minSpeed){ //stop if speed in less than minSpeed
             rb.velocity = Vector2.zero;
             if(isMoving){
-                gameManagerScript.movingPucks -= 1;
+                gameManagerScript.movingPucks -= 1; //Update movingPucks in gameManager
                 isMoving = false;
             } 
         }
 
-        if(!isMoving && rb.velocity.magnitude != 0){
+        if(!isMoving && rb.velocity.magnitude != 0){ //if it is moving then update movingPucks in gameManager
             isMoving = true;
             gameManagerScript.movingPucks += 1;
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
+    private void OnTriggerEnter2D(Collider2D other) { //updating score if potted
         if(other.tag == "Hole"){
             rb.velocity = Vector2.zero;
             transform.position = other.transform.position;
@@ -55,7 +56,7 @@ public class PuckScript : MonoBehaviour
         }
     }
 
-    IEnumerator DestroyAfter(int s){
+    IEnumerator DestroyAfter(int s){ //destroying and updating variables when potted
         yield return new WaitForSeconds(s);
         if(isMoving){
             gameManagerScript.movingPucks -= 1;

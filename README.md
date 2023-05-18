@@ -73,13 +73,14 @@ Contributions to the Carrom Game project are welcome! If you'd like to contribut
 5. Open a pull request to the main repository, describing your changes in detail.
 
 
-To get started with the Carrom Game, please follow these steps:
+To get started with the Carrom Game code, please follow these steps:
 
 1. Clone the repository to your local machine using the following command: git clone [https://github.com/yugalkishore59/Carrom-game.git] OR you can download a zip file or fork the repository.
 2. Open the Unity Editor.
 3. From the Unity Editor, select **File > Open Project** and navigate to the cloned repository's directory.
 4. Open the project by selecting the appropriate folder.
 5. Once the project is opened, you can explore the game and its assets in the Unity Editor.
+6. Now you can create an apk build of the project and install in your android device.
 
 The project maintainer(s) will review your contribution, provide feedback, and merge it if everything looks good.
 

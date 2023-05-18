@@ -17,7 +17,7 @@ Welcome to the Carrom Game repository! This is an Android game made in Unity tha
 
 To get started with the Carrom Game on your Android device, follow these steps:
 
-1. Download the APK file from the [releases](https://github.com/your-username/carrom-game/releases) page. OR create a build of the project using unity (explained in [Contributing](#contributing) section).
+1. Create a build of the project using unity (explained in [Contributing](#contributing) section).
 
 2. Transfer the APK file to your Android device.
 
